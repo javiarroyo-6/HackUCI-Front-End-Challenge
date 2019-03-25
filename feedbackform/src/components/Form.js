@@ -1,22 +1,25 @@
+import './FormStyle.css';
 import React, { Component } from 'react';
 
 
+const initialState = {
+    firstName:"",
+    lastName:"",
+    email:"",
+    message:"",
+    characters: 0,
+    firstNameError:'',
+    lastNameError:'',
+    emailError:"",
+    messageError:'',
+}
 
 class Form extends Component {
 
     
-state = {
-    firstName:"",
-    firstNameError:'',
-    lastName:"",
-    lastNameError:'',
-    email:"",
-    emailError:"",
-    message:"",
-    messageError:'',
-    characters: 0
- };
-        
+state = initialState;
+ 
+   
     
 
     handleChange = (e) => {
@@ -27,39 +30,46 @@ state = {
         });
     }
 
-    // validate = () => {
-    //     let isError = false;
-    //     const errors = {};
+    
+    validate = () => {
+        let firstNameError = "";
+        let lastNameError =  "";
+        let emailError = "";
+        let messageError = "";
 
-    //     if(this.state.firstName.length < 5 ){
-    //         isError=true;
-    //         errors.firstNameError = "Please fill out the field before submitting";
-    //     }
+        if (!this.state.email.includes('@')) {
+            emailError = "invalid email";
+        }
 
-    //     if(isError){
-    //         this.setState({
-    //             ...this.state,
-    //             ...errors
-    //         });
-    //     }
+        if (!this.state.firstName){
+            firstNameError = "Input cannot be blank"
+        }
 
-    //     return isError;
-    // }
+        if(!this.state.lastName){
+            lastNameError = "Input cannot be blank"
+        }
 
-  onSubmit = (e) => {
-    e.preventDefault();
-  
-   
-        // this.props.onSubmit(this.state);
-        this.setState({
-            firstName:"",
-            lastName:"",
-            email:"",
-            message:"",
-            characters: 0
-        });
-  
-  }
+        if(!this.state.messageError){
+            messageError = "Message cannot be blank"
+        }
+
+        if (emailError || firstNameError || lastNameError || messageError ){
+            this.setState ({ emailError, firstNameError, lastNameError , messageError });
+            return false;
+        }
+         return true;
+    };
+
+
+    onSubmit = (e) => {
+        e.preventDefault();
+            const isValid = this.validate();
+            if(isValid) {
+                console.log(this.state)
+                this.setState( initialState )
+            }
+        }
+
 
 
     
@@ -69,7 +79,7 @@ state = {
             <div className="ui segment" style={{backgroundColor:'#e7e7e7',marginTop:'90px'}}>
                 <form className="ui form">
                     <div className="ui field" style={{color:'bold'}}>
-                        <label style={{color:'#bb8ce5', textAlign:'center',fontFamily:"'Open Sans', sans-serif", fontSize:'large'}}>Feedback</label>
+                        <label style={{color:'#bb8ce5', textAlign:'center',fontFamily:"'Open Sans', sans-serif", fontSize:'xx-large'}}>Feedback</label>
                             <br />
                             <div >
                                 <input 
@@ -78,9 +88,10 @@ state = {
                                     onChange = {e => this.handleChange(e)}
                                     name="firstName"
                                     placeholder = "First Name"
-                                    errortext={this.state.firstNameError}
+                                   
                                 />
                             </div>
+                            <div style={{color:'red', fontSize:'12'}}>{this.state.firstNameError}</div>
                             <br />
                             <div>
                                 <input 
@@ -89,9 +100,10 @@ state = {
                                     onChange = {e => this.handleChange(e)}
                                     name="lastName"
                                     placeholder="Last Name"
-                                    errortext= {this.state.lastNameError}
+                                  
                                 />
                             </div>
+                            <div style={{color:'red',fontSize:'12'}}>{this.state.lastNameError}</div>
                             <br />
 
                             <div>
@@ -103,6 +115,7 @@ state = {
                                     placeholder="john@example.com"
                                 />
                             </div>
+                            <div style={{color:'red',fontSize:'12'}}>{this.state.emailError}</div>
                             <br />
                             <div>
                                 <textarea 
@@ -112,9 +125,10 @@ state = {
                                     name="message"
                                     placeholder="Message"
                                     maxLength="500"
-                                    errortext={this.state.messageError}
+                                    
                                 />
                             </div>
+                            <div style= {{color:'red',fontSize:'12'}}>{this.state.messageError}</div>
 
                             
                         <div>
@@ -134,3 +148,12 @@ state = {
 }
 
 export default Form;
+
+      
+            // this.setState({
+            //     firstName:"",
+            //     lastName:"",
+            //     email:"",
+            //     message:"",
+            //     characters: 0
+            // });
