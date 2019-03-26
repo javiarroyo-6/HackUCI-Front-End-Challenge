@@ -8,7 +8,7 @@ class Form extends Component {
         super(props)
         this.state = {
             firstName:"",
-                firstNameError:'',
+                firstNameError:'Please Enter Your First Name',
             lastName:"",
                 lastNameError:'',
             eMail:"",
@@ -19,37 +19,17 @@ class Form extends Component {
         
     }
 
-    handleChange = (event) => {
-        const {name, value} = event.target
+    handleChange = (e) => {
+        this.props.onChange({ [e.target.name]: e.target.value })
+        const {name, value} = e.target
         this.setState({
             [name]:value
         })
     }
 
-    validate = () => {
-        let isError = false;
-        const errors = {}
-
-        if(this.state.firstName.length < 5 ){
-            isError=true;
-            errors.firstNameError = "Please fill out the field before submitting";
-        }
-
-        if(isError){
-            this.setState({
-                ...this.state,
-                ...errors
-            });
-        }
-
-        return isError;
-    }
-
   onSubmit = (e) => {
     e.preventDefault();
-    const err = this.validate();
-    if(!err){
-        this.props.onSubmit(this.state);
+        // this.props.onSubmit(this.state);
         this.setState({
             firstName:"",
             lastName:"",
@@ -57,7 +37,7 @@ class Form extends Component {
             message:"",
             characters: 0
         })
-    }
+    
   }
 
 
@@ -70,7 +50,7 @@ class Form extends Component {
                 <div className="ui field" style={{color:'bold'}}>
                     <label style={{color:'#bb8ce5', textAlign:'center',fontFamily:"'Open Sans', sans-serif", fontSize:'large'}}>Feedback</label>
                         <br />
-                        <div className="ui input error">
+                        <div>
                             <input 
                                 type="text"
                                 value={this.state.firstName}
@@ -79,6 +59,7 @@ class Form extends Component {
                                 placeholder = "First Name"
                                 errorText={this.state.firstNameError}
                             />
+                            <div style={{color:'red',fontSize:'12'}}>{this.state.firstNameError}</div>
                         </div>
                         <br />
                         <div>
@@ -133,3 +114,23 @@ class Form extends Component {
 }
 
 export default Form;
+
+
+// validate = () => {
+//     let isError = false;
+//     const errors = {}
+
+//     if(this.state.firstName.length < 5 ){
+//         isError=true;
+//         errors.firstNameError = "Please fill out the field before submitting";
+//     }
+
+//     if(isError){
+//         this.setState({
+//             ...this.state,
+//             ...errors
+//         });
+//     }
+
+//     return isError;
+// }
