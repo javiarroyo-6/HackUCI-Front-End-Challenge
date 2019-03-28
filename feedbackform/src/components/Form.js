@@ -166,5 +166,5 @@ export default Form;
 
 
 // Prefer inline styling for this project seeing that it only contains one component.
-
-    
+// textarea input is bugged once I inserted "handleCharacterCount" function
+// form submits after pressing the submit button twice ... dont have time to debug anymore ! Sadness :(
